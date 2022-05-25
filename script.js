@@ -1,37 +1,33 @@
-function add (nums) {
-    const ans = nums.reduce((previousNumber, currentNumber) => previousNumber + currentNumber);
-    return ans;
+function add (num1, num2) {
+    return num1 + num2;
 }
 
-function subtract (nums) {
-    const ans = nums.reduce((previousNumber, currentNumber) => previousNumber - currentNumber);
-    return ans;
+function subtract (num1, num2) {
+    return num1 - num2;
 }
 
-function multiply (nums) {
-    const ans = nums.reduce((previousNumber, currentNumber) => previousNumber * currentNumber);
-    return ans;
+function multiply (num1, num2) {
+    return num1 * num2;
 }
 
-function divide (nums) {
-    const ans  = nums.reduce((previousNumber, currentNumber) => previousNumber / currentNumber);
-    return ans;
+function divide (num1, num2) {
+    return num1 / num2;
 }
 
-function operate (operator, ...nums) {
+function operate (operator, num1, num2) {
     switch (operator) {
         case 'add':
-            return add(nums);
+            return add(num1, num2);
         case 'subtract':
-            return subtract(nums);
+            return subtract(num1, num2);
         case 'multiply':
-             return multiply(nums);
+             return multiply(num1, num2);
         case 'divide':
-            return divide(nums);
+            return divide(num1, num2);
         default:
             console.log('Invalid operator');
             break;
     }
 }
 
-console.log(operate('multiply', 5, 5, 5));
+console.log(operate('multiply', 5, 5));
