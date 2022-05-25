@@ -57,10 +57,30 @@ html, body {
 
 /* body*/
 .body-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     height: 55%;
     width: 93%;
     background-color: rgba(114,115,107,255);
     border: .2vh solid rgba(100,101,96,255);
     border-radius: .5vh;
     margin-top: .2vh;
+}
+
+/*button*/
+
+.button-container {
+    display: grid;
+    grid-template-columns: repeat(4, 6vh);
+    gap: 2vh;
+    height: 90%;
+}
+
+#equals {
+    grid-row-end: span 2;
+}
+
+#zero {
+    grid-column-end: span 2;
 }
