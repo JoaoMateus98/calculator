@@ -77,10 +77,15 @@ html, body {
     height: 90%;
 }
 
-#equals {
+#equals-container {
     grid-row-end: span 2;
 }
 
-#zero {
+#zero-container {
     grid-column-end: span 2;
+}
+
+.button {
+    height: 100%;
+    width: 100%;
 }
