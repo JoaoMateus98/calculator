@@ -75,12 +75,33 @@ html, body {
 
 /* screen */
 .screen-container {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
     margin-top: .5vh;
     height: 20%;
     width: 93%;
     background-color: rgba(5,8,7,255);
     border: .25vh outset rgba(15,16,16,255);
     border-radius: .5vh;
+}
+
+.screen-output {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 2.5vh;
+    margin: 0 10%;
+    color: rgba(87,203,183,255);
+    height: inherit;
+    text-shadow:
+    0 0 1px #fff,
+    0 0 1px #fff,
+    0 0 1px #fff,
+    0 0 1px #0fa,
+    0 0 1px #0fa,
+    0 0 2px #0fa,
+    0 0 .5vh #0fa,
+    0 0 0 #0fa;
+
 }
 
 /* body*/
