@@ -1,9 +1,12 @@
+// Written by Joaomateus Dos Santos on May 2022
+
 const screenOutput = document.querySelector('.screen-output');
 const numberButtons = document.querySelectorAll('.numbers');
 const operatorButtons = document.querySelectorAll('.operators');
 const resetButton = document.querySelector('#ac');
+const deleteButton = document.querySelector('#del');
 
-console.log(resetButton);
+console.log(deleteButton);
 
 let curNumber = '';
 let storedVal = '';
@@ -40,6 +43,7 @@ function operate (operator, storedVal, curNumber) {
     }
 }
 
+// displays numbers to screen
 numberButtons.forEach((number) => number.addEventListener('click', (e) => {
     if (operator != 'equals') {
     curNumber += e.target.id;
@@ -51,7 +55,8 @@ numberButtons.forEach((number) => number.addEventListener('click', (e) => {
 
 operatorButtons.forEach((operatorInput) => operatorInput.addEventListener('click', checkOperation));
 
-// 
+// first it checks if user presed a operator button, if not assign current number in storedVal
+// next time they click operator button the answer is displayed and answer is stored in storedVal
 function checkOperation (e)  {
     if (operator.length === 0 && curNumber.length > 0){
         operator = e.target.id;
@@ -70,6 +75,14 @@ function checkOperation (e)  {
     }
     operator = e.target.id;
 };
+
+// deletes last number in the current displayed number but not of the actual answer aka storeVal
+deleteButton.addEventListener('click', () => {
+    if (curNumber.length > 0) {
+        curNumber = curNumber.slice(0, curNumber.length - 1);
+        screenOutput.textContent = curNumber;
+    }
+})
 
 // resets all the values
 resetButton.addEventListener('click', () => {
