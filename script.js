@@ -5,12 +5,13 @@ const numberButtons = document.querySelectorAll('.numbers');
 const operatorButtons = document.querySelectorAll('.operators');
 const resetButton = document.querySelector('#ac');
 const deleteButton = document.querySelector('#del');
+const dotButton = document.querySelector('#dot');
 
-console.log(deleteButton);
-
-let curNumber = '';
-let storedVal = '';
+let curNumber = '0';
+let storedValNum = 0;
+let storedValStr = '0';
 let operator = '';
+let currentlyDisplaying = 'input';
 
 function add (storedVal, curNumber) {
     return storedVal + curNumber;
@@ -38,56 +39,106 @@ function operate (operator, storedVal, curNumber) {
              return multiply(storedVal, curNumber);
         case 'divide':
             return divide(storedVal, curNumber);
-        default:
-            return;
+        case 'equals':
+            return storedVal;
     }
 }
 
-// displays numbers to screen
 numberButtons.forEach((number) => number.addEventListener('click', (e) => {
-    if (operator != 'equals') {
+    if (operator != 'equals' && curNumber.length < 14) {
     curNumber += e.target.id;
+    
+    if (curNumber.length > 1 && curNumber.charAt(0) === '0') { //prevents inputs like 000006 
+        if (curNumber.charAt(1) != '.'){ // allows inputs like 0.000006
+            curNumber = curNumber.slice(1, curNumber.length);
+        }
+    }
     } else {
         return;
     }
     screenOutput.textContent = curNumber;
+    currentlyDisplaying = 'input';
 }))
 
 operatorButtons.forEach((operatorInput) => operatorInput.addEventListener('click', checkOperation));
 
-// first it checks if user presed a operator button, if not assign current number in storedVal
-// next time they click operator button the answer is displayed and answer is stored in storedVal
 function checkOperation (e)  {
+
+    if (currentlyDisplaying === 'answer') { // keeps from pressing the operator button multiple times
+        operator = e.target.id; 
+        return;
+    }
+
+    currentlyDisplaying = 'answer';
+    
     if (operator.length === 0 && curNumber.length > 0){
         operator = e.target.id;
-        storedVal = Number.parseInt(curNumber);  
-        curNumber = '';
+        storedValNum = Number.parseFloat(curNumber);  
+        curNumber = '0';
 
-        screenOutput.textContent = storedVal;
+        screenOutput.textContent = storedValNum;
         return;
     }
 
     else if (operator.length > 0 && curNumber.length > 0) {
-        storedVal = operate(operator, storedVal, Number.parseInt(curNumber));
-        curNumber = '';
+        if (operator === 'divide' && curNumber === '0'){ // catch division by 0
+            alert(`Beep Boop Beep Boop... Can Not Compute ${storedValNum} / ${curNumber}`)
+            reset();
+            return;
+        }
 
-        screenOutput.textContent = storedVal;
+        if (storedValNum === 0 && operator === 'equals') {
+            return;
+        }
+        storedValNum = operate(operator, storedValNum, Number.parseFloat(curNumber));
+        storedValStr = storedValNum.toString();
+        curNumber = '0';
+        
+        if (storedValStr.length > 14) { // make sure the number isnt too large for screen
+            screenOutput.textContent = `${storedValStr.slice(0, 13)}...`;
+            return;
+        }
+        screenOutput.textContent = storedValStr;
     }
-    operator = e.target.id;
+    
+    operator = e.target.id; 
+    
+    
 };
+
+dotButton.addEventListener('click', () =>{
+    if (currentlyDisplaying === 'answer') {
+        return;
+    }
+    let curNumberArray = curNumber.split('');
+    if (curNumberArray.some((char) =>  char === '.')) {
+        return;
+    }
+    curNumberArray.push('.');
+    curNumber = curNumberArray.join('');
+    screenOutput.textContent = curNumber;
+    ;
+})
 
 // deletes last number in the current displayed number but not of the actual answer aka storeVal
 deleteButton.addEventListener('click', () => {
-    if (curNumber.length > 0) {
+    if (curNumber.length > 0 && currentlyDisplaying === 'input') {
         curNumber = curNumber.slice(0, curNumber.length - 1);
+        if (curNumber.length === 0) {
+            screenOutput.textContent = '0';
+            return;
+        }
         screenOutput.textContent = curNumber;
     }
 })
 
-// resets all the values
-resetButton.addEventListener('click', () => {
-    curNumber = '';
-    storedVal = '';
+resetButton.addEventListener('click', reset)
+
+function reset () {
+    curNumber = '0';
+    storedValNum = 0;
+    storedValStr = '0';
     operator = '';
-    screenOutput.textContent = '';
-})
+    currentlyDisplaying = 'input';
+    screenOutput.textContent = '0';
+}
